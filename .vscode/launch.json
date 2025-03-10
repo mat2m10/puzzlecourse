@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Godot",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "C:/Users/matth/Documents/Godot/Godot_v4.4-stable_mono_win64.exe",
+      "preLaunchTask": "build",
+      "args": [
+        "--path",
+        "${workspaceFolder}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "justMyCode": false
+    },
+    {
+      "name": "Launch Godot Editor",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "C:/Users/matth/Documents/Godot/Godot_v4.4-stable_mono_win64.exe",
+      "preLaunchTask": "build",
+      "args": [
+        "--path",
+        "${workspaceFolder}",
+        "--editor"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "justMyCode": false
+    },
+    {
+      "name": "Attach to Running Godot Process",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}",
+      "justMyCode": false
+    }
+  ]
+}
