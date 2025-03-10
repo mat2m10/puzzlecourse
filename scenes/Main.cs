@@ -3,22 +3,27 @@ using System;
 namespace Game;
 public partial class Main : Node2D
 {
-	private Sprite2D sprite;
+	private Sprite2D cursor;
 	private PackedScene buildingScene;
+	private Button placeBuildingButton;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		buildingScene = GD.Load<PackedScene>("res://scenes/building/Building.tscn");
-		sprite = GetNode<Sprite2D>("Cursor");
+		cursor = GetNode<Sprite2D>("Cursor");
+		placeBuildingButton = GetNode<Button>("PlaceBuildingButton");
+		placeBuildingButton.Pressed += OnButtonPressed;
+		cursor.Visible = false;
 
 	}
 
 	public override void _UnhandledInput(InputEvent evt)
 	{
-		if (evt.IsActionPressed("left_click"))
+		if (cursor.Visible && evt.IsActionPressed("left_click"))
 		{
 			PlaceBuildingAtMousePosition();
+			cursor.Visible = false;
 		}
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,7 +31,7 @@ public partial class Main : Node2D
 	{
 
 		var gridPosition = GetMouseGridCellPosition();
-		sprite.GlobalPosition = gridPosition * 64;
+		cursor.GlobalPosition = gridPosition * 64;
 	}
 
 	private Vector2 GetMouseGridCellPosition()
@@ -43,5 +48,10 @@ public partial class Main : Node2D
 		AddChild(building);
 		var gridPosition = GetMouseGridCellPosition();
 		building.GlobalPosition = gridPosition * 64;
+	}
+
+	private void OnButtonPressed()
+	{
+		cursor.Visible = true;
 	}
 }
