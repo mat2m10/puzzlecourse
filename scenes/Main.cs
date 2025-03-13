@@ -7,7 +7,7 @@ public partial class Main : Node
 	private Sprite2D cursor;
 	private PackedScene buildingScene;
 	private Button placeBuildingButton;
-	private Vector2? hoverGridCell;
+	private Vector2I? hoverGridCell;
 
 	private TileMapLayer HighlightTileMapLayer;
 	
@@ -24,7 +24,7 @@ public partial class Main : Node
 
 	public override void _UnhandledInput(InputEvent evt)
 	{
-		if (hoverGridCell.HasValue && evt.IsActionPressed("left_click") && gridManager.IsTilePositionValid(hoverGridCell.Value))
+		if (hoverGridCell.HasValue && evt.IsActionPressed("left_click") && gridManager.IsTilePositionBuildable(hoverGridCell.Value))
 		{
 			PlaceBuildingAtHoveredCellPosition();
 			cursor.Visible = false;
@@ -38,7 +38,7 @@ public partial class Main : Node
 		if (cursor.Visible && (!hoverGridCell.HasValue || hoverGridCell.Value != gridPosition))
 		{
 			hoverGridCell = gridPosition;
-			gridManager.HighlightValidTilesInRadius(hoverGridCell.Value, 3);
+			gridManager.HighlightbuildableTiles();
 		}
 	}
 
@@ -54,7 +54,6 @@ public partial class Main : Node
 		AddChild(building);
 		
 		building.GlobalPosition = hoverGridCell.Value * 64;
-		gridManager.MarkTileAsOccupied(hoverGridCell.Value);	
 		hoverGridCell = null;
 		gridManager.ClearHiglightedTiles();
 	}
