@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjfxx4iaqb1t0"]
+
+[ext_resource type="Script" uid="uid://b37ombjdxr0mo" path="res://scenes/UI/GameUI.cs" id="1_sjnlv"]
+[ext_resource type="Resource" uid="uid://tk50uglw88rd" path="res://resources/building/tower.tres" id="2_5ji2y"]
+[ext_resource type="Resource" uid="uid://d3h51t362iv0o" path="res://resources/building/village.tres" id="3_5dnvl"]
+
+[node name="GameUI" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_sjnlv")
+buildingResources = Array[Object]([ExtResource("2_5ji2y"), ExtResource("3_5dnvl")])
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 16

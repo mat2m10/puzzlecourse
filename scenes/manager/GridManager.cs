@@ -59,8 +59,6 @@ public partial class GridManager : Node
 
 	public void HighlightExpandableBuildableTiles(Vector2I rootCell, int radius)
 	{
-		HighlightbuildableTiles();
-
 		var validTiles = GetValidTilesInRadius(rootCell, radius).ToHashSet();
 		var expandedTiles = validTiles.Except(validBuildableTiles).Except(GetOccupiedTiles());
 		var atlasCoords = new Vector2I(1, 0);
