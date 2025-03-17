@@ -13,6 +13,9 @@ public partial class GridManager : Node
 	private const string IS_WOOD = "is_wood";
 	[Signal]
 	public delegate void ResourceTilesUpatedEventHandler(int collectedTiles);
+
+	[Signal]
+	public delegate void GridStateUpdatedEventHandler();
 	private HashSet<Vector2I> validBuildableTiles = new();
 	private HashSet<Vector2I> collectedResourceTiles = new();
 	private HashSet<Vector2I> occupiedTiles = new();
@@ -90,9 +93,15 @@ public partial class GridManager : Node
 	public Vector2I GetMouseGridCellPosition()
 	{
 		var mousePosition = HighlightTileMapLayer.GetGlobalMousePosition();
-		var gridPosition = mousePosition / 64;
-		gridPosition = gridPosition.Floor();
-		return new Vector2I((int)gridPosition.X, (int)gridPosition.Y);
+		return ConvertWorldPositiontoGridCellPosition(mousePosition);
+
+	}
+
+	public Vector2I ConvertWorldPositiontoGridCellPosition(Vector2 worldPosition)
+	{
+		var tilePosition = worldPosition / 64;
+		tilePosition = tilePosition.Floor();
+		return new Vector2I((int)tilePosition.X, (int)tilePosition.Y);
 	}
 
 	private List<TileMapLayer> GetAllTilemapLayers(TileMapLayer rootTilemapLayer)
@@ -118,6 +127,7 @@ public partial class GridManager : Node
 		var validTiles = GetValidTilesInRadius(rootCell, buildingComponent.BuildingResource.BuildableRadius);
 		validBuildableTiles.UnionWith(validTiles);
 		validBuildableTiles.ExceptWith(occupiedTiles);
+		EmitSignal(SignalName.GridStateUpdated);
 	}
 
 	private void UpdateCollectedResourceTiles(BuildingComponent buildingComponent)
@@ -127,8 +137,9 @@ public partial class GridManager : Node
 		var old_resource_tiles = collectedResourceTiles.Count;
 		collectedResourceTiles.UnionWith(resourceTiles);
 		if (old_resource_tiles != collectedResourceTiles.Count) {
-			
+			EmitSignal(SignalName.ResourceTilesUpated, collectedResourceTiles.Count);
 		}
+		EmitSignal(SignalName.GridStateUpdated);
 	}
 
 	private void RecalculateGrid(BuildingComponent excludeBuildingComponent)
@@ -145,6 +156,7 @@ public partial class GridManager : Node
 			UpdateCollectedResourceTiles(building);
 		}
 		EmitSignal(SignalName.ResourceTilesUpated, collectedResourceTiles.Count);
+		EmitSignal(SignalName.GridStateUpdated);
 	}
 	
 	private List<Vector2I> GetTilesInRadius(Vector2I rootCell, int radius, Func<Vector2I, bool> filterFn)
